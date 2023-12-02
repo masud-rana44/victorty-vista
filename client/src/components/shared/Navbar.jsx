@@ -1,12 +1,14 @@
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
+import useUser from "../../hooks/useUser";
+import { Link, NavLink } from "react-router-dom";
+import MenuDropdown from "./MenuDropdown";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const [expanded, setExpanded] = useState(false);
   const { user } = useAuth();
   const { userData, isLoading } = useUser();
-
-  const credits = userData?.credits || 0;
 
   const links = (
     <>
@@ -53,36 +55,6 @@ const Navbar = () => {
           <div className="lg:mr-0 ml-auto flex items-center space-x-4 lg:space-x-10">
             {user ? (
               <>
-                {userData?.role === "creator" && (
-                  <div className="flex items-center gap-x-1">
-                    <BsCoin
-                      size={24}
-                      className="inline-block text-2xl text-gray-900"
-                    />
-                    <span className="inline-block text-xl text-gray-600 font-sono font-semibold">
-                      {credits}
-                    </span>
-
-                    <div className="hidden lg:flex ml-2">
-                      <Link
-                        to="/credits/buy"
-                        className="inline-flex items-center justify-center px-2 py-[2px] text-sm font-medium leading-7 text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-xl hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-                        role="button"
-                      >
-                        Buy Credits
-                      </Link>
-                    </div>
-                    <div className="flex lg:hidden ml-2">
-                      <Link
-                        to="/credits/buy"
-                        className="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-medium leading-7 transition-all duration-200 text-gray-900 border-gray-900 border border-transparent  hover:bg-gray-100 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-100"
-                        role="button"
-                      >
-                        <IoAdd size={24} />
-                      </Link>
-                    </div>
-                  </div>
-                )}
                 <MenuDropdown role={userData?.role} isLoading={isLoading} />
               </>
             ) : (
