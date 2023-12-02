@@ -42,7 +42,7 @@ export default function UsersTable({ data }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead className="bg-primary ">
+        <TableHead className="bg-indigo-700 ">
           <TableRow className="text-white font-medium">
             <TableCell>No</TableCell>
             <TableCell>IMAGE</TableCell>

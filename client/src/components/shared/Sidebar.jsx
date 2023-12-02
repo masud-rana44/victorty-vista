@@ -22,6 +22,7 @@ const Sidebar = () => {
   const { role, isLoading } = useRole();
 
   const isAdmin = role === "admin";
+  const isCreator = role === "creator";
 
   if (isLoading) return <Loader />;
 
@@ -51,6 +52,24 @@ const Sidebar = () => {
     },
   ];
 
+  const creatorLinks = [
+    {
+      label: "Add Contest",
+      to: "/dashboard/add-contest",
+      Icon: Home,
+    },
+    {
+      label: "My Registered Contest",
+      to: "/dashboard/registered-contests",
+      Icon: CalendarDays,
+    },
+    {
+      label: "My Winning Contest",
+      to: "/dashboard/winning-contests",
+      Icon: CalendarDays,
+    },
+  ];
+
   const navLinks = [
     {
       label: "Home",
@@ -74,7 +93,7 @@ const Sidebar = () => {
     },
   ];
 
-  const links = isAdmin ? adminLinks : userLinks;
+  const links = isAdmin ? adminLinks : isCreator ? creatorLinks : userLinks;
 
   return (
     <div className="min-h-screen w-[260px]  fixed top-0 left-0 bg-primary py-8">
