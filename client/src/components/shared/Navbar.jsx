@@ -1,8 +1,8 @@
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import useUser from "../../hooks/useUser";
 import { Link, NavLink } from "react-router-dom";
 import MenuDropdown from "./MenuDropdown";
+import useUser from "../../hooks/useUser";
 import Logo from "./Logo";
 
 const Navbar = () => {
@@ -10,8 +10,26 @@ const Navbar = () => {
   const { user } = useAuth();
   const { userData, isLoading } = useUser();
 
+  if (isLoading) return null;
+
+  console.log(userData);
+
   const links = (
     <>
+      <NavLink
+        to="/"
+        title=""
+        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2 "
+      >
+        {userData?.role}
+      </NavLink>
+      <NavLink
+        to="/dashboard"
+        title=""
+        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2 "
+      >
+        Dashboard
+      </NavLink>
       <NavLink
         to="/"
         title=""
@@ -39,81 +57,62 @@ const Navbar = () => {
   );
 
   return (
-    <header className="fixed w-full h-[80px] bg-gray-50 border-b z-10  py-4 md:py-6">
-      <div className="container px-4 mx-auto sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-x-4">
-          {/* Logo */}
+    <header className="absolute inset-x-0 top-0 z-10 w-full">
+      <div className="px-4 mx-auto sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
           <div className="flex-shrink-0">
-            <Logo size="sm" />
+            <Link to="/" title="" className="flex">
+              <Logo />
+            </Link>
           </div>
 
-          <div className="hidden lg:flex lg:ml-16 lg:items-center lg:justify-center lg:space-x-10 xl:space-x-16">
-            {/* Links */}
-            {user && links}
+          <button
+            type="button"
+            className="inline-flex p-2 text-black transition-all duration-200 rounded-md lg:hidden focus:bg-gray-100 hover:bg-gray-100"
+          >
+            <svg
+              className="block w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+
+            <svg
+              className="hidden w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+
+          <div className="hidden ml-auto lg:flex lg:items-center lg:justify-center lg:space-x-10">
+            {links}
+
+            <Link
+              to="/login"
+              className="inline-flex items-center justify-center px-5 py-2.5 text-base font-semibold transition-all duration-200 rounded-full bg-orange-500 text-white hover:bg-orange-600 focus:bg-orange-600"
+              role="button"
+            >
+              Login
+            </Link>
           </div>
-
-          <div className="lg:mr-0 ml-auto flex items-center space-x-4 lg:space-x-10">
-            {user ? (
-              <>
-                <MenuDropdown role={userData?.role} isLoading={isLoading} />
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  title=""
-                  className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
-                >
-                  Login
-                </Link>
-
-                <Link
-                  to="/signup"
-                  title=""
-                  className="inline-flex items-center justify-center px-6 py-2 text-base font-bold leading-7 text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-xl hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-                  role="button"
-                >
-                  Sign up
-                </Link>
-              </>
-            )}
-          </div>
-
-          {user && (
-            <div className="flex lg:hidden">
-              <button
-                type="button"
-                className="text-gray-900"
-                onClick={() => setExpanded(!expanded)}
-                aria-expanded={expanded}
-              >
-                <span
-                  style={{ display: !expanded ? "block" : "none" }}
-                  aria-hidden="true"
-                >
-                  {/* SVG for closed */}
-                  <img src={close} alt="" className="h-7 w-7" />
-                </span>
-                <span
-                  style={{ display: expanded ? "block" : "none" }}
-                  aria-hidden="true"
-                >
-                  {/* SVG for expanded */}
-                  <img src={open} alt="" className="h-7 w-7" />
-                </span>
-              </button>
-            </div>
-          )}
         </div>
-
-        {/* Collapsed navigation */}
-        {expanded && (
-          <nav>
-            <div className="px-1 py-8">
-              <div className="grid gap-y-7">{user && links}</div>
-            </div>
-          </nav>
-        )}
       </div>
     </header>
   );

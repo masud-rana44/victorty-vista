@@ -5,6 +5,7 @@ import PublicRoute from "./PublicRoute";
 import LoginPage from "../pages/auth/LoginPage";
 import RegistrationPage from "../pages/auth/RegistrationPage";
 import HomePage from "../pages/home/HomePage";
+import { DashboardLayout } from "../layout/DashboardLayout";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
   },
   {
     path: "/login",

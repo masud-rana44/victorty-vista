@@ -6,6 +6,8 @@ const useUser = () => {
   const { user, loading } = useAuth();
   const axiosSecure = useAxiosSecure();
 
+  console.log(user);
+
   const {
     data: userData,
     error,

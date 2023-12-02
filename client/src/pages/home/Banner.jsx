@@ -1,115 +1,106 @@
 const Banner = () => {
   return (
-    <div className="bg-gray-50">
-      <section className="pt-12 pb-12 sm:pb-16 lg:pt-8">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-12 lg:gap-x-16">
-            <div>
-              <div className="text-center lg:text-left">
-                <h1 className="text-4xl font-bold leading-tight text-gray-900 sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl font-pj">
-                  A special credit card made for Developers.
-                </h1>
-                <p className="mt-2 text-lg text-gray-600 sm:mt-8 font-inter">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Vehicula massa in enim luctus. Rutrum arcu.
-                </p>
+    <div className="relative">
+      
 
-                <form action="#" method="POST" className="mt-8 sm:mt-10">
-                  <div className="relative p-2 sm:border sm:border-gray-400 group sm:rounded-xl sm:focus-within:ring-1 sm:focus-within:ring-gray-900 sm:focus-within:border-gray-900">
-                    <input
-                      type="email"
-                      name=""
-                      id=""
-                      placeholder="Enter email address"
-                      className="block w-full px-4 py-4 text-gray-900 placeholder-gray-900 bg-transparent border border-gray-400 outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 rounded-xl sm:border-none sm:focus:ring-0 sm:focus:border-transparent"
-                      required=""
-                    />
-                    <div className="mt-4 sm:mt-0 sm:absolute sm:inset-y-0 sm:right-0 sm:flex sm:items-center sm:pr-2">
-                      <button
-                        type="submit"
-                        className="inline-flex px-6 py-3 text-lg font-bold text-white transition-all duration-200 bg-gray-900 rounded-lg focus:outline-none focus:bg-gray-600 font-pj hover:bg-gray-600"
-                      >
-                        Get Free Card
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-
-              <div className="flex items-center justify-center mt-10 space-x-6 lg:justify-start sm:space-x-8">
-                <div className="flex items-center">
-                  <p className="text-3xl font-medium text-gray-900 sm:text-4xl font-pj">
-                    2943
-                  </p>
-                  <p className="ml-3 text-sm text-gray-900 font-pj">
-                    Cards
-                    <br />
-                    Delivered
-                  </p>
-                </div>
-
-                <div className="hidden sm:block">
-                  <svg
-                    className="text-gray-400"
-                    width="16"
-                    height="39"
-                    viewBox="0 0 16 39"
-                    fill="none"
-                    stroke="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <line
-                      x1="0.72265"
-                      y1="10.584"
-                      x2="15.7226"
-                      y2="0.583975"
-                    ></line>
-                    <line
-                      x1="0.72265"
-                      y1="17.584"
-                      x2="15.7226"
-                      y2="7.58398"
-                    ></line>
-                    <line
-                      x1="0.72265"
-                      y1="24.584"
-                      x2="15.7226"
-                      y2="14.584"
-                    ></line>
-                    <line
-                      x1="0.72265"
-                      y1="31.584"
-                      x2="15.7226"
-                      y2="21.584"
-                    ></line>
-                    <line
-                      x1="0.72265"
-                      y1="38.584"
-                      x2="15.7226"
-                      y2="28.584"
-                    ></line>
-                  </svg>
-                </div>
-
-                <div className="flex items-center">
-                  <p className="text-3xl font-medium text-gray-900 sm:text-4xl font-pj">
-                    $1M+
-                  </p>
-                  <p className="ml-3 text-sm text-gray-900 font-pj">
-                    Transaction
-                    <br />
-                    Completed
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div>
+      <section className="bg-yellow-50 overflow-hidden">
+        <div className="flex flex-col lg:flex-row lg:items-stretch lg:min-h-[800px]">
+          <div className="relative flex items-center justify-center w-full lg:order-2 lg:w-7/12">
+            <div className="absolute bottom-0 right-0 hidden lg:block">
               <img
-                className="w-full"
-                src="https://d33wubrfki0l68.cloudfront.net/d6f1462500f7670e0db6b76b35054a081679a5a0/0ce15/images/hero/5.1/illustration.png"
+                className="object-contain w-auto h-48"
+                src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/3/curved-lines.png"
                 alt=""
               />
+            </div>
+
+            <div className="relative px-4 pt-24 pb-16 text-center sm:px-6 md:px-24 2xl:px-32 lg:py-24 lg:text-left">
+              <h1 className="text-4xl font-bold text-black sm:text-6xl xl:text-8xl">
+                Get it done.
+                <br />
+                Fast, Easy.
+              </h1>
+              <p className="mt-8 text-xl text-black">
+                We help you to make your remote work life easier. Build a
+                distruction free working experience.
+              </p>
+
+              <form
+                action="#"
+                method="POST"
+                className="max-w-xl mx-auto mt-8 bg-white lg:mx-0 sm:bg-transparent lg:mt-12 rounded-xl"
+              >
+                <div className="p-4 sm:p-2 sm:bg-white sm:border-2 sm:border-transparent sm:rounded-full sm:focus-within:border-orange-500 sm:focus-within:ring-1 sm:focus-within:ring-orange-500">
+                  <div className="flex flex-col items-start sm:flex-row">
+                    <div className="flex-1 w-full min-w-0">
+                      <div className="relative text-gray-400 focus-within:text-gray-600">
+                        <label for="email" className="sr-only"></label>
+                        <input
+                          type="email"
+                          name="email"
+                          id="email"
+                          placeholder="Enter email to get started"
+                          className="block w-full px-4 py-4 text-base text-center text-black placeholder-gray-500 transition-all duration-200 border-transparent rounded-full sm:text-left focus:border-transparent focus:ring-0 caret-orange-500"
+                          required=""
+                        />
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center w-full px-4 py-4 mt-4 font-semibold text-white transition-all duration-200 bg-orange-500 border border-transparent rounded-full sm:w-auto sm:ml-4 sm:mt-0 hover:bg-orange-600 focus:bg-orange-600"
+                    >
+                      Try 14 days free
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <p className="mt-5 text-base text-black">
+                Instant access . No credit card required
+              </p>
+            </div>
+
+            <div className="absolute right-0 z-10 -bottom-16 lg:top-24 lg:-left-20">
+              <img
+                className="w-32 h-32 md:w-40 md:h-40"
+                src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/3/circular-text.png"
+                alt=""
+              />
+            </div>
+          </div>
+
+          <div className="relative w-full overflow-hidden lg:order-1 h-96 lg:h-auto lg:w-5/12">
+            <div className="absolute inset-0">
+              <img
+                className="object-cover w-full h-full scale-150"
+                src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/3/man-working-on-laptop.jpg"
+                alt=""
+              />
+            </div>
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+
+            <div className="absolute bottom-0 left-0">
+              <div className="p-4 sm:p-6 lg:p-8">
+                <div className="flex items-center">
+                  <svg
+                    className="w-10 h-10 text-orange-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <h2 className="font-bold text-white text-7xl ml-2.5">395</h2>
+                </div>
+                <p className="max-w-xs mt-1.5 text-xl text-white">
+                  Professionals have organized their desk via PostCra
+                </p>
+              </div>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ export const saveUser = async (user) => {
     name: user?.displayName,
     email: user?.email,
     image: user?.photoURL,
+    role: "user",
   });
 
   return data;
