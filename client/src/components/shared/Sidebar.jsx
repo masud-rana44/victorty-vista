@@ -13,75 +13,41 @@ import {
   Wallet,
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Loader } from "../shared/Loader";
-import { useRole } from "../../hooks/useRole";
-import Logo from "./Logo";
+import Loader from "../shared/Loader";
+import useRole from "../../hooks/useRole.js";
+import Logo from "../shared/Logo";
 
-export const Sidebar = () => {
+const Sidebar = () => {
   const { pathname } = useLocation();
-  const role = useRole();
+  const { role, isLoading } = useRole();
 
   const isAdmin = role === "admin";
-  console.log(isAdmin);
+
+  if (isLoading) return <Loader />;
 
   const userLinks = [
     {
-      label: "User Home",
-      to: "/dashboard/user-home",
+      label: "All Users",
+      to: "/dashboard/all-users",
       Icon: Home,
     },
     {
-      label: "Reservation",
-      to: "/dashboard/reservations",
+      label: "All Contests",
+      to: "/dashboard/all-contests",
       Icon: CalendarDays,
-    },
-    {
-      label: "Payment History",
-      to: "/dashboard/payment-history",
-      Icon: Wallet,
-    },
-    {
-      label: "My Cart",
-      to: "/dashboard/cart",
-      Icon: ShoppingCart,
-    },
-    {
-      label: "Add Review",
-      to: "/dashboard/reviews",
-      Icon: MessageSquare,
-    },
-    {
-      label: "My Booking",
-      to: "/dashboard/bookings",
-      Icon: CalendarCheck2,
     },
   ];
 
   const adminLinks = [
     {
-      label: "Admin Home",
-      to: "/dashboard/admin-home",
+      label: "All Users",
+      to: "/dashboard/all-users",
       Icon: Home,
     },
     {
-      label: "Add Items",
-      to: "/dashboard/items/new",
-      Icon: Utensils,
-    },
-    {
-      label: "Manage Items",
-      to: "/dashboard/items",
-      Icon: Menu,
-    },
-    {
-      label: "Mange Bookings",
-      to: "/dashboard/bookings",
-      Icon: Book,
-    },
-    {
-      label: "All Users",
-      to: "/dashboard/users",
-      Icon: Users2,
+      label: "All Contests",
+      to: "/dashboard/all-contests",
+      Icon: CalendarDays,
     },
   ];
 
@@ -147,3 +113,5 @@ export const Sidebar = () => {
     </div>
   );
 };
+
+export default Sidebar;

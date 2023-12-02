@@ -6,6 +6,8 @@ import LoginPage from "../pages/auth/LoginPage";
 import RegistrationPage from "../pages/auth/RegistrationPage";
 import HomePage from "../pages/home/HomePage";
 import { DashboardLayout } from "../layout/DashboardLayout";
+import AllUsers from "../pages/admin/AllUsers";
+import AllContests from "../pages/admin/AllContests";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,16 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardLayout />,
+    children: [
+      {
+        path: "all-users",
+        element: <AllUsers />,
+      },
+      {
+        path: "all-contests",
+        element: <AllContests />,
+      },
+    ],
   },
   {
     path: "/login",

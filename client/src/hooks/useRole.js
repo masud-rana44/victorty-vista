@@ -1,13 +1,12 @@
-import Loader from "../components/shared/Loader";
 import useUser from "./useUser";
 
 const useRole = () => {
   const { userData, isLoading } = useUser();
 
-  if (isLoading) return <Loader />;
+  console.log(userData);
 
   const role = userData?.role;
-  return role;
+  return { role, isLoading };
 };
 
 export default useRole;

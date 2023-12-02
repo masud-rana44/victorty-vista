@@ -160,9 +160,17 @@ async function run() {
         const id = req.params.id;
         const user = req.body;
         const result = await usersCollection.updateOne(
-          { _id: ObjectId(id) },
+          { _id: new ObjectId(id) },
           { $set: user }
         );
+        res.send(result);
+      },
+
+      deleteUser: async (req, res) => {
+        const id = req.params.id;
+        const result = await usersCollection.deleteOne({
+          _id: new ObjectId(id),
+        });
         res.send(result);
       },
     };
@@ -650,8 +658,9 @@ async function run() {
     // Users Routes
     app.get("/users/:email", userController.getUserByEmail);
     app.post("/users/:email", userController.createUser);
-    app.patch("/users/:id", verifyRole("admin"), userController.updateUser);
-    app.get("/users", verifyRole("admin"), userController.getAllUsers);
+    app.patch("/users/:id", userController.updateUser);
+    app.delete("/users/:id", userController.deleteUser);
+    app.get("/users", userController.getAllUsers);
 
     // Contest Routes
     app.get("/contests/", contestController.getAllContests);
