@@ -1,108 +1,150 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Logo } from "./Logo";
-import Badge from "@mui/material/Badge";
-import { Menu, ShoppingCart, X } from "lucide-react";
-import { UserIcon } from "./UserIcon";
 import { useState } from "react";
-import { useCart } from "../hooks/useCart";
-import { useAdmin } from "../hooks/useAdmin";
-import { useAuth } from "../contexts/AuthContext";
+import useAuth from "../../hooks/useAuth";
 
-export const Navbar = () => {
-  const { pathname } = useLocation();
-  const { isAdmin } = useAdmin();
+const Navbar = () => {
+  const [expanded, setExpanded] = useState(false);
   const { user } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cart } = useCart();
-  const navigate = useNavigate();
+  const { userData, isLoading } = useUser();
 
-  const links = [
-    {
-      label: "Home",
-      to: "/",
-    },
-    {
-      label: "Contact Us",
-      to: "/contact",
-    },
-    {
-      label: "Dashboard",
-      to: isAdmin ? "/dashboard/admin-home" : "/dashboard/user-home",
-    },
-    {
-      label: "Our Menu",
-      to: "/menu",
-    },
-    {
-      label: "Our Shop",
-      to: "/shop",
-    },
-  ];
+  const credits = userData?.credits || 0;
+
+  const links = (
+    <>
+      <NavLink
+        to="/"
+        title=""
+        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2 "
+      >
+        Home
+      </NavLink>
+
+      <NavLink
+        to="/contests"
+        title=""
+        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+      >
+        Contests
+      </NavLink>
+
+      <NavLink
+        to="/leaderboard"
+        title=""
+        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+      >
+        Leader Board
+      </NavLink>
+    </>
+  );
 
   return (
-    <header className="fixed h-[80px] w-full flex items-center justify-between bg-black/30 text-white px-2 lg:px-10 z-10">
-      <Logo />
+    <header className="fixed w-full bg-gray-50 border-b z-10  py-4 md:py-6">
+      <div className="container px-4 mx-auto sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-x-4">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Logo size="sm" />
+          </div>
 
-      {/* for desktop */}
-      <nav className="hidden  font-medium text-[15px] uppercase lg:flex items-center space-x-6">
-        <ul className="flex items-center gap-x-6">
-          {links.map(
-            (link) =>
-              (user || link.label !== "Dashboard") && (
-                <li
-                  key={link.to}
-                  className={pathname === link.to && "text-yellow-400"}
+          <div className="hidden lg:flex lg:ml-16 lg:items-center lg:justify-center lg:space-x-10 xl:space-x-16">
+            {/* Links */}
+            {user && links}
+          </div>
+
+          <div className="lg:mr-0 ml-auto flex items-center space-x-4 lg:space-x-10">
+            {user ? (
+              <>
+                {userData?.role === "creator" && (
+                  <div className="flex items-center gap-x-1">
+                    <BsCoin
+                      size={24}
+                      className="inline-block text-2xl text-gray-900"
+                    />
+                    <span className="inline-block text-xl text-gray-600 font-sono font-semibold">
+                      {credits}
+                    </span>
+
+                    <div className="hidden lg:flex ml-2">
+                      <Link
+                        to="/credits/buy"
+                        className="inline-flex items-center justify-center px-2 py-[2px] text-sm font-medium leading-7 text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-xl hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                        role="button"
+                      >
+                        Buy Credits
+                      </Link>
+                    </div>
+                    <div className="flex lg:hidden ml-2">
+                      <Link
+                        to="/credits/buy"
+                        className="inline-flex items-center justify-center h-8 w-8 rounded-full text-sm font-medium leading-7 transition-all duration-200 text-gray-900 border-gray-900 border border-transparent  hover:bg-gray-100 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-100"
+                        role="button"
+                      >
+                        <IoAdd size={24} />
+                      </Link>
+                    </div>
+                  </div>
+                )}
+                <MenuDropdown role={userData?.role} isLoading={isLoading} />
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  title=""
+                  className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
                 >
-                  <Link to={link.to}>{link.label}</Link>
-                </li>
-              )
-          )}
-        </ul>
-        <Badge badgeContent={cart?.length || 0} color="primary">
-          <ShoppingCart
-            onClick={() => navigate("/dashboard/cart")}
-            className="w-6 h-6 cursor-pointer"
-          />
-        </Badge>
-        <UserIcon />
-      </nav>
+                  Login
+                </Link>
 
-      {/* for mobile */}
-      <div className="lg:hidden flex items-center space-x-4">
-        <Badge badgeContent={cart?.length || 0} color="primary">
-          <ShoppingCart
-            onClick={() => navigate("/dashboard/cart")}
-            className="w-6 h-6 cursor-pointer"
-          />
-        </Badge>
-        <UserIcon />
+                <Link
+                  to="/signup"
+                  title=""
+                  className="inline-flex items-center justify-center px-6 py-2 text-base font-bold leading-7 text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-xl hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                  role="button"
+                >
+                  Sign up
+                </Link>
+              </>
+            )}
+          </div>
 
-        <div
-          onClick={() => setIsMenuOpen((open) => !open)}
-          className=" h-10 w-10 rounded-full bg-yellow-400  flex items-center justify-center cursor-pointer"
-        >
-          {!isMenuOpen ? (
-            <Menu className="h-6 w-6" />
-          ) : (
-            <X className="h-6 w-6" />
+          {user && (
+            <div className="flex lg:hidden">
+              <button
+                type="button"
+                className="text-gray-900"
+                onClick={() => setExpanded(!expanded)}
+                aria-expanded={expanded}
+              >
+                <span
+                  style={{ display: !expanded ? "block" : "none" }}
+                  aria-hidden="true"
+                >
+                  {/* SVG for closed */}
+                  <img src={close} alt="" className="h-7 w-7" />
+                </span>
+                <span
+                  style={{ display: expanded ? "block" : "none" }}
+                  aria-hidden="true"
+                >
+                  {/* SVG for expanded */}
+                  <img src={open} alt="" className="h-7 w-7" />
+                </span>
+              </button>
+            </div>
           )}
         </div>
-      </div>
 
-      {isMenuOpen && (
-        <nav className="absolute lg:hidden top-20 left-0 w-full  font-medium text-[15px] uppercase flex items-center justify-center space-x-6 bg-black/30 p-10">
-          <ul className="flex flex-col items-center space-y-3 ">
-            {links.map((link) => (
-              <li
-                key={link.to}
-                className={pathname === link.to && "text-yellow-400"}
-              >
-                <Link to={link.to}>{link.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+        {/* Collapsed navigation */}
+        {expanded && (
+          <nav>
+            <div className="px-1 py-8">
+              <div className="grid gap-y-7">{user && links}</div>
+            </div>
+          </nav>
+        )}
+      </div>
     </header>
   );
 };
+
+export default Navbar;
