@@ -382,6 +382,8 @@ async function run() {
           const email = req.decoded.email;
           const user = await usersCollection.findOne({ email });
 
+          console.log(user);
+
           if (!user || user.role !== "user") {
             return res
               .status(403)
@@ -389,7 +391,11 @@ async function run() {
           }
 
           const result = await contestCollection
-            .find({ participants: user._id })
+            .find({
+              participants: {
+                $in: [user._id.toString()],
+              },
+            })
             .toArray();
           res.status(200).json(result);
         } catch (error) {
@@ -606,6 +612,54 @@ async function run() {
           res.status(500).json({ error: error.message });
         }
       },
+      getLeaderboard: async (req, res) => {
+        console.log("getLeaderboard");
+        try {
+          const users = await contestCollection
+            .aggregate([
+              {
+                $match: { status: "accepted", winner: { $ne: null } },
+              },
+              {
+                $group: {
+                  _id: "$winner",
+                  totalPrizeMoney: { $sum: "$prizeMoney" },
+                },
+              },
+              {
+                $lookup: {
+                  from: "users",
+                  localField: "_id",
+                  foreignField: "_id",
+                  as: "winner",
+                },
+              },
+              {
+                $unwind: "$winner",
+              },
+              {
+                $project: {
+                  _id: 0,
+                  winner: "$winner.name",
+                  image: "$winner.image",
+                  email: "$winner.email",
+                  totalPrizeMoney: 1,
+                },
+              },
+              {
+                $sort: { totalPrizeMoney: -1 },
+              },
+              {
+                $limit: 20,
+              },
+            ])
+            .toArray();
+
+          res.status(200).send(users);
+        } catch (error) {
+          res.status(500).send(error);
+        }
+      },
       getUserStats: async (req, res) => {
         const email = req.decoded?.email;
 
@@ -671,38 +725,42 @@ async function run() {
       verifyToken,
       contestController.getAllContestsForAdmin
     );
-    app.get("/contests", contestController.getAllContests);
-    app.get("/contests/:id", contestController.getContestById);
-    app.get("/contests/popular", contestController.getPopularContests);
-    app.get(
-      "/contests/creator/:creatorId",
-      verifyToken,
-      contestController.getContestByCreator
-    );
-    app.get(
-      "/contests/best-creator",
-      contestController.getBestCreatorByPrizeMoney
-    );
-    app.post("/contests", verifyToken, contestController.createContest);
     app.get(
       "/contests/registered",
       verifyToken,
       contestController.getRegisteredContest
     );
-    app.get("/contests/winning", contestController.getWinningContest);
+    app.get("/contests/popular", contestController.getPopularContests);
+    app.get(
+      "/contests/best-creator",
+      contestController.getBestCreatorByPrizeMoney
+    );
+    app.get("/contests/winners", contestController.getWinners);
+    app.get("/contests/leaderboard", contestController.getLeaderboard);
+    app.get("/contests/", contestController.getAllContests);
+    app.post("/contests/", verifyToken, contestController.createContest);
+    app.get(
+      "/contests/winning",
+      verifyToken,
+      contestController.getWinningContest
+    );
+    app.get("/contests/user-stats", contestController.getUserStats);
+    app.get("/contests/:id", contestController.getContestById);
     app.patch("/contests/:id", contestController.updateContest);
     app.delete("/contests/:id", contestController.deleteContest);
-    app.patch(
-      "/contests/:contestId/winner",
-      verifyRole("creator"),
-      contestController.declareWinner
+    app.get(
+      "/contests/creator/:creatorId",
+      contestController.getContestByCreator
     );
+    app.get(
+      "/contests/:contestId/creator/:creatorId",
+      contestController.getContestByIdForCreators
+    );
+    app.patch("/contests/:contestId/winner", contestController.declareWinner);
     app.patch(
       "/contests/:contestId/participant/:userId",
       contestController.addParticipant
     );
-    app.get("/contests/winners", contestController.getWinners);
-    app.get("/contests/user-stats", contestController.getUserStats);
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

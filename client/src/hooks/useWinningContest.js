@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getWinningContests } from "../api/apiContests";
+import { getWinningContests } from "../api/contest";
 
 const useWinningContest = () => {
   const {
