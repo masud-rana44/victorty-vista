@@ -33,7 +33,7 @@ const AddContest = () => {
 
       if (res) {
         toast.success("Contest added successfully");
-        navigate("/dashboard/creator/contests");
+        navigate("/dashboard/created-contests");
       }
     } catch (error) {
       toast.error(

@@ -9,8 +9,9 @@ import { DashboardLayout } from "../layout/DashboardLayout";
 import AllUsers from "../pages/admin/AllUsers";
 import AllContests from "../pages/admin/AllContests";
 import AddContest from "../pages/creator/AddContest";
-import MyRegisteredContest from "../pages/creator/MyRegisteredContest";
-import MyWinningContest from "../pages/creator/MyWinningContest";
+import MyRegisteredContest from "../pages/users/MyRegisteredContest";
+import MyWinningContest from "../pages/users/MyWinningContest";
+import MyCreatedContest from "../pages/creator/MyCreatedContest";
 
 const router = createBrowserRouter([
   {
@@ -35,12 +36,6 @@ const router = createBrowserRouter([
         path: "all-contests",
         element: <AllContests />,
       },
-
-      // route for creator
-      {
-        path: "add-contest",
-        element: <AddContest />,
-      },
       {
         path: "registered-contests",
         element: <MyRegisteredContest />,
@@ -48,6 +43,16 @@ const router = createBrowserRouter([
       {
         path: "winning-contests",
         element: <MyWinningContest />,
+      },
+
+      // route for creator
+      {
+        path: "add-contest",
+        element: <AddContest />,
+      },
+      {
+        path: "created-contests",
+        element: <MyCreatedContest />,
       },
     ],
   },
