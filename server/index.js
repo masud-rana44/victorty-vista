@@ -503,7 +503,7 @@ async function run() {
           }
 
           // check if the participant is already added
-          const isParticipant = contest.participants.includes(userId);
+          const isParticipant = contest?.participants?.includes(userId);
           if (isParticipant) {
             return res
               .status(400)
@@ -696,6 +696,10 @@ async function run() {
       "/contests/:contestId/winner",
       verifyRole("creator"),
       contestController.declareWinner
+    );
+    app.patch(
+      "/contests/:contestId/participant/:userId",
+      contestController.addParticipant
     );
     app.get("/contests/winners", contestController.getWinners);
     app.get("/contests/user-stats", contestController.getUserStats);

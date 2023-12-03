@@ -13,7 +13,7 @@ const CheckoutForm = ({ amount }) => {
   const { user } = useAuth();
   const [clientSecret, setClientSecret] = useState("");
   const { contestId } = useParams();
-  const { userData, refetch } = useUser();
+  const { userData } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
