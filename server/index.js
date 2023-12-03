@@ -179,14 +179,11 @@ async function run() {
     const contestController = {
       getAllContests: async (req, res) => {
         try {
-          const searchText = req.query.search || "";
-
           const result = await contestCollection
             .aggregate([
               {
                 $match: {
-                  // status: "accepted",
-                  type: { $regex: searchText, $options: "i" },
+                  status: "accepted",
                 },
               },
               {
@@ -195,11 +192,8 @@ async function run() {
                   type: 1,
                   image: 1,
                   description: 1,
-                  participantsCount: { $size: "$participants" },
+                  // participantsCount: { $size: "$participants" },
                 },
-              },
-              {
-                $sort: { participantsCount: -1 },
               },
             ])
             .toArray();
