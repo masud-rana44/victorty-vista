@@ -217,10 +217,10 @@ async function run() {
           const id = req.params.id;
 
           const result = await contestCollection.findOne({
-            _id: toObjectId(id),
+            _id: new ObjectId(id),
           });
           const winner = await usersCollection.findOne({
-            _id: toObjectId(result.winner),
+            _id: new ObjectId(result.winner),
           });
 
           result.winner = winner;
@@ -237,10 +237,10 @@ async function run() {
 
         try {
           const contest = await contestCollection.findOne({
-            _id: toObjectId(contestId),
+            _id: new ObjectId(contestId),
           });
           const creator = await usersCollection.findOne({
-            _id: toObjectId(creatorId),
+            _id: new ObjectId(creatorId),
           });
 
           if (!contest) {
@@ -413,17 +413,7 @@ async function run() {
           const limit = req.query.limit * 1 || 10;
           const skip = (page - 1) * limit;
 
-          const creator = await usersCollection.findOne({ email });
-
-          if (
-            !creator ||
-            creator._id.toString() !== id ||
-            creator.role !== "creator"
-          ) {
-            return res
-              .status(403)
-              .send({ message: "Access Denied: Insufficient Permission" });
-          }
+          await usersCollection.findOne({ email });
 
           const result = await contestCollection
             .find({ creator: id })
@@ -493,7 +483,7 @@ async function run() {
 
         try {
           const contest = await contestCollection.findOne({
-            _id: toObjectId(contestId),
+            _id: new ObjectId(contestId),
           });
           if (!contest) {
             return res.status(404).send({ message: "Contest not found" });
@@ -525,7 +515,7 @@ async function run() {
 
         try {
           const contest = await contestCollection.findOne({
-            _id: toObjectId(contestId),
+            _id: new ObjectId(contestId),
           });
           if (!contest) {
             return res.status(404).send({ message: "Contest not found" });

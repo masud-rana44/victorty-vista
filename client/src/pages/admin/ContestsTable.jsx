@@ -11,6 +11,7 @@ import { StatusMenu } from "./StatusMenu";
 
 import { deleteContest } from "../../api/contest";
 import useContestForAdmin from "../../hooks/useContestsForAdmin";
+import { Link } from "react-router-dom";
 
 export default function ContestsTable({ data }) {
   const { refetch } = useContestForAdmin();
@@ -100,12 +101,11 @@ export default function ContestsTable({ data }) {
               </TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
-                  <div
-                    onClick={() => handleDeleteUser(row._id)}
-                    className="px-2 py-3 rounded-sm bg-blue-600 w-12 flex items-center justify-center text-white hover:opacity-75 transition cursor-pointer"
-                  >
-                    <Edit size={18} />
-                  </div>
+                  <Link to={`/dashboard/contests/update/${row._id}`}>
+                    <div className="px-2 py-3 rounded-sm bg-blue-600 w-12 flex items-center justify-center text-white hover:opacity-75 transition cursor-pointer">
+                      <Edit size={18} />
+                    </div>
+                  </Link>
                   <div
                     onClick={() => handleDeleteUser(row._id)}
                     className="px-2 py-3 rounded-sm bg-red-600 w-12 flex items-center justify-center text-white hover:opacity-75 transition cursor-pointer"
