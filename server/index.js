@@ -451,7 +451,6 @@ async function run() {
             .toArray();
 
           const total = await contestCollection.countDocuments();
-          console.log(total);
 
           res.send({ result, count: total });
         } catch (error) {
@@ -574,10 +573,11 @@ async function run() {
       deleteContest: async (req, res) => {
         const id = req.params.id;
         const result = await contestCollection.deleteOne({
-          _id: toObjectId(id),
+          _id: new ObjectId(id),
         });
         res.send(result);
       },
+
       getWinners: async (req, res) => {
         try {
           const contests = await contestCollection
@@ -683,16 +683,8 @@ async function run() {
       contestController.getRegisteredContest
     );
     app.get("/contests/winning", contestController.getWinningContest);
-    app.patch(
-      "/contests/:id",
-      verifyRole("creator", "admin"),
-      contestController.updateContest
-    );
-    app.delete(
-      "/contests/:id",
-      verifyRole("creator", "admin"),
-      contestController.deleteContest
-    );
+    app.patch("/contests/:id", contestController.updateContest);
+    app.delete("/contests/:id", contestController.deleteContest);
     app.patch(
       "/contests/:contestId/winner",
       verifyRole("creator"),

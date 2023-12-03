@@ -7,12 +7,11 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Edit, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useUsers from "../../hooks/useUsers";
 import { StatusMenu } from "./StatusMenu";
+import { deleteContest } from "../../api/contest";
 
 export default function ContestsTable({ data }) {
-  const axiosSecure = useAxiosSecure();
   const { refetch } = useUsers();
 
   const handleDeleteUser = (id) => {
@@ -26,7 +25,8 @@ export default function ContestsTable({ data }) {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await axiosSecure.delete(`/contests/${id}`);
+        const res = await deleteContest(id);
+        console.log(res);
         if (res.data.deletedCount > 0) {
           refetch();
           Swal.fire({
