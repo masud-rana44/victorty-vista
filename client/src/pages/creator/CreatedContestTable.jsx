@@ -1,6 +1,37 @@
 import { BiEdit, BiSolidEyedropper, BiTrash } from "react-icons/bi";
+import Swal from "sweetalert2";
+import { deleteContest } from "../../api/contest";
+import useContestByCreator from "../../hooks/useContestByCreator";
+import { Link, useLocation } from "react-router-dom";
 
 const CreatedContestTable = ({ data }) => {
+  const { refetch } = useContestByCreator();
+  const location = useLocation();
+
+  const handleDeleteContests = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deleteContest(id);
+        if (res?.acknowledged) {
+          refetch();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Contest deleted",
+            icon: "success",
+          });
+        }
+      }
+    });
+  };
+
   return (
     <div className="overflow-x-auto bg-white">
       <table className="table">
@@ -52,10 +83,18 @@ const CreatedContestTable = ({ data }) => {
                 )}
               </td>
               <th className="flex items-center justify-end space-x-1">
-                <button className="btn btn-outline btn-primary btn-sm">
-                  <BiEdit />
-                </button>
-                <button className="btn btn-outline btn-error btn-sm">
+                <Link
+                  to={`/dashboard/contests/update/${contest._id}`}
+                  state={{ from: location }}
+                >
+                  <button className="btn btn-outline btn-primary btn-sm">
+                    <BiEdit />
+                  </button>
+                </Link>
+                <button
+                  onClick={() => handleDeleteContests(contest._id)}
+                  className="btn btn-outline btn-error btn-sm"
+                >
                   <BiTrash />
                 </button>
                 <button className="btn btn-outline btn-success btn-sm">

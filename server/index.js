@@ -429,16 +429,10 @@ async function run() {
           const id = req.params.creatorId;
           const email = req.decoded.email;
 
-          const page = req.query.page * 1 || 1;
-          const limit = req.query.limit * 1 || 10;
-          const skip = (page - 1) * limit;
-
           await usersCollection.findOne({ email });
 
           const result = await contestCollection
             .find({ creator: id })
-            .skip(skip)
-            .limit(limit)
             .toArray();
           const total = await contestCollection.countDocuments({ creator: id });
 
@@ -709,7 +703,7 @@ async function run() {
         const contestId = req.params.contestId;
 
         try {
-          const participant = await userCollection.findOne({ email });
+          const participant = await usersCollection.findOne({ email });
 
           if (!participant || participant.role !== "user") {
             return res
@@ -758,7 +752,7 @@ async function run() {
             participantId: participant._id,
           });
 
-          res.status(201).json(task.ops[0]);
+          res.status(201).json(task);
         } catch (error) {
           res.status(500).send(error);
         }
@@ -790,6 +784,11 @@ async function run() {
       contestController.getAllContestsForAdmin
     );
     app.get(
+      "/contests/creator/:creatorId",
+      verifyToken,
+      contestController.getContestByCreator
+    );
+    app.get(
       "/contests/registered",
       verifyToken,
       contestController.getRegisteredContest
@@ -813,10 +812,6 @@ async function run() {
     app.patch("/contests/:id", contestController.updateContest);
     app.delete("/contests/:id", contestController.deleteContest);
     app.get(
-      "/contests/creator/:creatorId",
-      contestController.getContestByCreator
-    );
-    app.get(
       "/contests/:contestId/creator/:creatorId",
       contestController.getContestByIdForCreators
     );
@@ -827,11 +822,16 @@ async function run() {
     );
 
     // Task Routes
-    app
-      .route("/contests/:contestId")
-      .use(verifyToken)
-      .get(taskController.getTaskById)
-      .post(taskController.createTask);
+    app.get(
+      "/tasks/contests/:contestId",
+      verifyToken,
+      taskController.getTaskById
+    );
+    app.post(
+      "/tasks/contests/:contestId",
+      verifyToken,
+      taskController.createTask
+    );
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

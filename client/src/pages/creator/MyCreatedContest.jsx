@@ -6,7 +6,6 @@ const MyCreatedContest = () => {
   const { contests, isLoading } = useContestByCreator();
 
   if (isLoading) return <Loader />;
-  console.log(contests);
 
   return (
     <div>
