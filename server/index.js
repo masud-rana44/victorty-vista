@@ -38,6 +38,7 @@ async function run() {
 
     const usersCollection = db.collection("users");
     const contestCollection = db.collection("contests");
+    const taskCollection = db.collection("tasks");
 
     // -----------------------------------------
     //************** MIDDLEWARES****************
@@ -701,6 +702,69 @@ async function run() {
       },
     };
 
+    // Task Controller
+    const taskController = {
+      getTaskById: async (req, res) => {
+        const email = req.decoded.email;
+        const contestId = req.params.contestId;
+
+        try {
+          const participant = await userCollection.findOne({ email });
+
+          if (!participant || participant.role !== "user") {
+            return res
+              .status(403)
+              .send({ message: "Access Denied: Insufficient Permission" });
+          }
+
+          const task = await taskCollection.findOne({
+            contestId,
+            participantId: participant._id,
+          });
+
+          res.status(200).json(task);
+        } catch (error) {
+          console.log(error);
+          res.status(500).send(error);
+        }
+      },
+
+      createTask: async (req, res) => {
+        const email = req.decoded.email;
+        const contestId = req.params.contestId;
+
+        try {
+          const participant = await usersCollection.findOne({ email });
+          if (!participant || participant.role !== "user") {
+            return res
+              .status(403)
+              .send({ message: "Access Denied: Insufficient Permission" });
+          }
+
+          // check if already submitted
+          const isAlreadySubmitted = await taskCollection.findOne({
+            contestId,
+            participantId: participant._id,
+          });
+
+          if (isAlreadySubmitted) {
+            return res.status(403).send({ message: "Already Submitted" });
+          }
+
+          // create task
+          const task = await taskCollection.insertOne({
+            task: req.body.task,
+            contestId,
+            participantId: participant._id,
+          });
+
+          res.status(201).json(task.ops[0]);
+        } catch (error) {
+          res.status(500).send(error);
+        }
+      },
+    };
+
     // -----------------------------------------
     //************** ROUTERS ****************
     // -----------------------------------------
@@ -761,6 +825,13 @@ async function run() {
       "/contests/:contestId/participant/:userId",
       contestController.addParticipant
     );
+
+    // Task Routes
+    app
+      .route("/contests/:contestId")
+      .use(verifyToken)
+      .get(taskController.getTaskById)
+      .post(taskController.createTask);
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

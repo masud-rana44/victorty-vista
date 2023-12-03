@@ -1,10 +1,10 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import FileUploader from "../../components/Shared/FileUploader";
-import useTaskByContestId from "../../hooks/useTaskByContestId";
-import Loader from "../../components/Shared/Loader";
-import { createTask } from "../../api/apiTask";
 import toast from "react-hot-toast";
 import { Button } from "@mui/material";
+import Loader from "../../components/shared/Loader";
+import { createTask } from "../../api/task";
+import FileUploader from "../../components/shared/FileUploader";
+import useTaskByContestId from "../../hooks/useTaskByContestId";
 
 const TaskSubmission = () => {
   const { contestId } = useParams();

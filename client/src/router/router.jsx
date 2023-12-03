@@ -16,6 +16,7 @@ import Contests from "../pages/Contests";
 import UpdateContest from "../pages/creator/UpdateContest";
 import ContestDetails from "../pages/ContestDetails";
 import ContestRegistration from "../pages/ContestRegistration";
+import TaskSubmission from "../pages/users/TaskSubmission";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "registered-contests",
         element: <MyRegisteredContest />,
+      },
+      {
+        path: "task-submission/:contestId",
+        element: <TaskSubmission />,
       },
       {
         path: "winning-contests",
