@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllContests } from "../api/apiContests";
 import { useSearchParams } from "react-router-dom";
+import { getAllContests } from "../api/contest";
 
 const useContests = (text) => {
   const [searchParams] = useSearchParams();

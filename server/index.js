@@ -185,7 +185,7 @@ async function run() {
             .aggregate([
               {
                 $match: {
-                  status: "accepted",
+                  // status: "accepted",
                   type: { $regex: searchText, $options: "i" },
                 },
               },
@@ -203,6 +203,8 @@ async function run() {
               },
             ])
             .toArray();
+
+          console.log(result);
 
           res.status(200).json(result);
         } catch (error) {
@@ -437,11 +439,11 @@ async function run() {
       },
 
       getAllContestsForAdmin: async (req, res) => {
-        const page = req.query.page * 1 || 1;
-        const limit = req.query.limit * 1 || 10;
-        const skip = (page - 1) * limit;
-
         try {
+          const page = req.query.page * 1 || 1;
+          const limit = req.query.limit * 1 || 10;
+          const skip = (page - 1) * limit;
+
           const result = await contestCollection
             .find({})
             .skip(skip)
@@ -449,11 +451,12 @@ async function run() {
             .toArray();
 
           const total = await contestCollection.countDocuments();
+          console.log(total);
 
           res.send({ result, count: total });
         } catch (error) {
           console.log(error);
-          res.status(500).json({ error: error.message });
+          res.status(500).send(error);
         }
       },
 
@@ -656,14 +659,14 @@ async function run() {
     app.get("/users", userController.getAllUsers);
 
     // Contest Routes
-    app.get("/contests", contestController.getAllContests);
-    app.get("/contests/:id", contestController.getContestById);
-    app.get("/contests/popular", contestController.getPopularContests);
     app.get(
       "/contests/admin",
       verifyToken,
       contestController.getAllContestsForAdmin
     );
+    app.get("/contests", contestController.getAllContests);
+    app.get("/contests/:id", contestController.getContestById);
+    app.get("/contests/popular", contestController.getPopularContests);
     app.get(
       "/contests/creator/:creatorId",
       verifyToken,

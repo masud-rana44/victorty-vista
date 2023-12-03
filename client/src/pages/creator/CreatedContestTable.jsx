@@ -41,7 +41,15 @@ const CreatedContestTable = ({ data }) => {
                 <td>{contest.deadline}</td>
               </td>
               <td>
-                <td>{contest.status}</td>
+                {contest.status === "pending" ? (
+                  <div className="badge badge-secondary badge-outline">
+                    {contest.status}
+                  </div>
+                ) : (
+                  <div className="badge badge-accent badge-outline">
+                    {contest.status}
+                  </div>
+                )}
               </td>
               <th className="flex items-center justify-end space-x-1">
                 <button className="btn btn-outline btn-primary btn-sm">
