@@ -17,6 +17,7 @@ import UpdateContest from "../pages/creator/UpdateContest";
 import ContestDetails from "../pages/ContestDetails";
 import ContestRegistration from "../pages/ContestRegistration";
 import TaskSubmission from "../pages/users/TaskSubmission";
+import ContestSubmission from "../pages/creator/ContestSubmission";
 
 const router = createBrowserRouter([
   {
@@ -74,6 +75,14 @@ const router = createBrowserRouter([
       {
         path: "created-contests",
         element: <MyCreatedContest />,
+      },
+      {
+        path: "contests-submission/:id",
+        element: <ContestSubmission />,
+      },
+      {
+        path: "contests/update/:id",
+        element: <UpdateContest />,
       },
       {
         path: "contests/update/:id",

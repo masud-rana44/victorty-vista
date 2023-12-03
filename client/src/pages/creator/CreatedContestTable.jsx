@@ -1,8 +1,8 @@
-import { BiEdit, BiSolidEyedropper, BiTrash } from "react-icons/bi";
 import Swal from "sweetalert2";
 import { deleteContest } from "../../api/contest";
 import useContestByCreator from "../../hooks/useContestByCreator";
 import { Link, useLocation } from "react-router-dom";
+import { Eye, FileEdit, Trash } from "lucide-react";
 
 const CreatedContestTable = ({ data }) => {
   const { refetch } = useContestByCreator();
@@ -83,23 +83,30 @@ const CreatedContestTable = ({ data }) => {
                 )}
               </td>
               <th className="flex items-center justify-end space-x-1">
-                <Link
-                  to={`/dashboard/contests/update/${contest._id}`}
-                  state={{ from: location }}
-                >
-                  <button className="btn btn-outline btn-primary btn-sm">
-                    <BiEdit />
-                  </button>
-                </Link>
-                <button
-                  onClick={() => handleDeleteContests(contest._id)}
-                  className="btn btn-outline btn-error btn-sm"
-                >
-                  <BiTrash />
-                </button>
-                <button className="btn btn-outline btn-success btn-sm">
-                  <BiSolidEyedropper />
-                </button>
+                {contest.status === "pending" ? (
+                  <>
+                    <Link
+                      to={`/dashboard/contests/update/${contest._id}`}
+                      state={{ from: location }}
+                    >
+                      <button className="btn btn-outline btn-primary btn-sm">
+                        <FileEdit className="h-6 w-6" />
+                      </button>
+                    </Link>
+                    <button
+                      onClick={() => handleDeleteContests(contest._id)}
+                      className="btn btn-outline btn-error btn-sm"
+                    >
+                      <Trash className="h-6 w-6" />
+                    </button>
+                  </>
+                ) : (
+                  <Link to={`/dashboard/contests-submission/${contest._id}`}>
+                    <button className="btn btn-outline btn-success btn-sm">
+                      <Eye className="h-6 w-6" />
+                    </button>
+                  </Link>
+                )}
               </th>
             </tr>
           ))}
