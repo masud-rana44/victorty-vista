@@ -7,12 +7,10 @@ import Logo from "./Logo";
 
 const Navbar = () => {
   const [expanded, setExpanded] = useState(false);
-  const { user } = useAuth();
+  const { user, logOut } = useAuth();
   const { userData, isLoading } = useUser();
 
   if (isLoading) return null;
-
-  console.log(userData);
 
   const links = (
     <>
@@ -104,13 +102,23 @@ const Navbar = () => {
           <div className="hidden ml-auto lg:flex lg:items-center lg:justify-center lg:space-x-10">
             {links}
 
-            <Link
-              to="/login"
-              className="inline-flex items-center justify-center px-5 py-2.5 text-base font-semibold transition-all duration-200 rounded-full bg-orange-500 text-white hover:bg-orange-600 focus:bg-orange-600"
-              role="button"
-            >
-              Login
-            </Link>
+            {user ? (
+              <Link
+                onClick={logOut}
+                className="inline-flex items-center justify-center px-5 py-2.5 text-base font-semibold transition-all duration-200 rounded-full bg-orange-500 text-white hover:bg-orange-600 focus:bg-orange-600"
+                role="button"
+              >
+                Logout
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center px-5 py-2.5 text-base font-semibold transition-all duration-200 rounded-full bg-orange-500 text-white hover:bg-orange-600 focus:bg-orange-600"
+                role="button"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>

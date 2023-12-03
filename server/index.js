@@ -1,20 +1,24 @@
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// middlewares
-app.use(
-  cors({
-    origin: ["http://localhost:5173"],
-    credentials: true,
-  })
-);
+// middleware
+const corsOptions = {
+  origin: ["http://localhost:5173", "http://localhost:5174"],
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
+app.use(morgan("dev"));
 
 const uri = process.env.MONGO_URL;
 
@@ -40,22 +44,18 @@ async function run() {
     // -----------------------------------------
 
     // verify the token
-    const verifyToken = (req, res, next) => {
-      if (!req.headers.authorization) {
-        return res.status(401).send({ message: "Unauthorized Access" });
-      }
-
-      const token = req.headers.authorization.split(" ")[1] || null;
+    const verifyToken = async (req, res, next) => {
+      const token = req.cookies?.token;
+      console.log(token);
       if (!token) {
-        return res.status(401).send({ message: "Unauthorized Access" });
+        return res.status(401).send({ message: "unauthorized access" });
       }
-
-      // If there is a token, verify it
-      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) {
-          return res.status(401).send({ message: "Unauthorized Access" });
+          console.log(err);
+          return res.status(401).send({ message: "unauthorized access" });
         }
-        req.decoded = decoded;
+        req.user = decoded;
         next();
       });
     };
@@ -86,7 +86,7 @@ async function run() {
       createToken: async (req, res) => {
         const user = req.body;
         console.log("I need a new jwt", user);
-        const token = jwt.sign(user, process.env.JWT_SECRET, {
+        const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
           expiresIn: process.env.JWT_EXPIRES_IN,
         });
         res
@@ -460,9 +460,10 @@ async function run() {
       createContest: async (req, res) => {
         try {
           const contest = req.body;
+          console.log(req.body);
 
           const creator = await usersCollection.findOne({
-            _id: contest.creator,
+            _id: new ObjectId(contest.creator),
             role: "creator",
           });
           if (!creator) {
@@ -471,14 +472,6 @@ async function run() {
               .send({ message: "Access Denied: Insufficient Permission" });
           }
 
-          const credits = creator?.credits || 0;
-
-          if (credits < 50) {
-            return res.status(400).send({ message: "Insufficient credits" });
-          }
-
-          // deduct 50 credits from the creator
-          creator.credits = credits - 50;
           await usersCollection.updateOne(
             { _id: creator._id },
             { $set: { credits: creator.credits } }
@@ -486,7 +479,7 @@ async function run() {
 
           const result = await contestCollection.insertOne(contest);
 
-          res.status(201).send(result.ops[0]);
+          res.status(201).send(result);
         } catch (error) {
           res.status(500).json({ error: error.message });
         }
@@ -663,25 +656,23 @@ async function run() {
     app.get("/users", userController.getAllUsers);
 
     // Contest Routes
-    app.get("/contests/", contestController.getAllContests);
+    app.get("/contests", contestController.getAllContests);
     app.get("/contests/:id", contestController.getContestById);
     app.get("/contests/popular", contestController.getPopularContests);
     app.get(
       "/contests/admin",
-      verifyRole("admin"),
       verifyToken,
       contestController.getAllContestsForAdmin
     );
     app.get(
       "/contests/creator/:creatorId",
-      verifyRole("admin", "creator"),
       contestController.getContestByCreator
     );
     app.get(
       "/contests/best-creator",
       contestController.getBestCreatorByPrizeMoney
     );
-    app.post("/contests/", verifyToken, contestController.createContest);
+    app.post("/contests", verifyToken, contestController.createContest);
     app.get(
       "/contests/registered",
       verifyToken,

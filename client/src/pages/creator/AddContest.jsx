@@ -9,22 +9,14 @@ import Loader from "../../components/shared/Loader";
 import SpinnerMini from "../../components/shared/SpinnerMini";
 
 const AddContest = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const { userData, isLoading: isUserLoading } = useUser();
   const [isLoading, setIsLoading] = useState(false);
 
   if (isUserLoading && !userData) return <Loader />;
 
-  const credits = userData?.credits || 0;
-
   const onSubmit = async (data) => {
-    if (credits < 50) return toast.error("You don't have enough credits");
-
     setIsLoading(true);
     try {
       // upload image
@@ -63,7 +55,7 @@ const AddContest = () => {
         <h1 className="text-2xl text-gray-700 font-bold ">Add New Contest</h1>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-10">
-        <div>
+        <div className="space-y-4">
           <div>
             <label
               htmlFor="contestName"
@@ -74,6 +66,7 @@ const AddContest = () => {
             <input
               className="input border"
               type="text"
+              required
               id="contestName"
               {...register("title", {
                 required: "Title is required",
@@ -91,6 +84,7 @@ const AddContest = () => {
             <input
               className="input border"
               type="file"
+              required
               accept="image/*"
               id="image"
               {...register("image", {
@@ -109,7 +103,7 @@ const AddContest = () => {
             <option value="business">Business Contest</option>
             <option value="medical">Medical Contest</option>
             <option value="writing">Article Writing</option>
-            <option value="gaming">Gaming</option>
+            <option value="gaming">Gaming Contest</option>
           </select>
 
           <label
@@ -121,16 +115,14 @@ const AddContest = () => {
           <textarea
             className="input border"
             id="description"
+            required
             rows={6}
             {...register("description", {
               required: "Contest Description is required",
-              validate: (value) =>
-                value.length >= 50 ||
-                "Description must be at least 50 characters",
             })}
           />
         </div>
-        <div>
+        <div className="space-y-4">
           <label
             htmlFor="prizeMoney"
             className="block mb-2 text-sm font-medium text-gray-900 "
@@ -140,6 +132,7 @@ const AddContest = () => {
           <input
             className="input border"
             type="number"
+            required
             step="any"
             id="priceMoney"
             {...register("prizeMoney", {
@@ -159,11 +152,10 @@ const AddContest = () => {
             className="input border"
             type="number"
             step="any"
+            required
             id="entryFee"
             {...register("entryFee", {
               required: "Entry fee is required",
-              validate: (value) =>
-                value > 0 || "Entry fee must be greater than 0",
             })}
           />
 
@@ -176,12 +168,10 @@ const AddContest = () => {
           <textarea
             className="input border"
             id="instruction"
+            required
             rows={6}
             {...register("instruction", {
               required: "Contest instruction is required",
-              validate: (value) =>
-                value.length >= 20 ||
-                "Instructions must be at least 20 characters",
             })}
           />
 
@@ -192,20 +182,22 @@ const AddContest = () => {
             Deadline
           </label>
           <input
-            type="datetime-local"
+            type="date"
             className="input border"
+            required
             id="deadline"
             {...register("deadline", {
               required: "Contest Deadline is required",
-              validate: (value) =>
-                new Date(value) > new Date() ||
-                "Deadline must be greater than today",
             })}
           />
         </div>
       </div>
       <div>
-        <button disabled={isLoading} className="btn disabled:opacity-50">
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="btn disabled:opacity-50"
+        >
           {isLoading ? <SpinnerMini /> : "Add Contest"}
         </button>
       </div>
