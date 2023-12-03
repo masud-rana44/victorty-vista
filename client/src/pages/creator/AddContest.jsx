@@ -28,6 +28,7 @@ const AddContest = () => {
         image: imageUrl,
         priceMoney: parseFloat(data.prizeMoney),
         entryFee: parseFloat(data.entryFee),
+        status: "pending",
         creator: userData._id,
       });
 

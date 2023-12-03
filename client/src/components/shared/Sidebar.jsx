@@ -1,17 +1,4 @@
-import {
-  Book,
-  CalendarCheck2,
-  CalendarDays,
-  Home,
-  Mail,
-  Menu,
-  MessageSquare,
-  ShoppingBag,
-  ShoppingCart,
-  Users2,
-  Utensils,
-  Wallet,
-} from "lucide-react";
+import { CalendarDays, Home, Mail, Menu, ShoppingBag } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import Loader from "../shared/Loader";
 import useRole from "../../hooks/useRole.js";
@@ -28,13 +15,13 @@ const Sidebar = () => {
 
   const userLinks = [
     {
-      label: "All Users",
-      to: "/dashboard/all-users",
-      Icon: Home,
+      label: "My Registered Contest",
+      to: "/dashboard/registered-contests",
+      Icon: CalendarDays,
     },
     {
-      label: "All Contests",
-      to: "/dashboard/all-contests",
+      label: "My Winning Contest",
+      to: "/dashboard/winning-contests",
       Icon: CalendarDays,
     },
   ];
@@ -59,13 +46,8 @@ const Sidebar = () => {
       Icon: Home,
     },
     {
-      label: "My Registered Contest",
-      to: "/dashboard/registered-contests",
-      Icon: CalendarDays,
-    },
-    {
-      label: "My Winning Contest",
-      to: "/dashboard/winning-contests",
+      label: "My Created Contest",
+      to: "/dashboard/created-contests",
       Icon: CalendarDays,
     },
   ];

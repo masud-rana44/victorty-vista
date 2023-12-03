@@ -55,7 +55,7 @@ async function run() {
           console.log(err);
           return res.status(401).send({ message: "unauthorized access" });
         }
-        req.user = decoded;
+        req.decoded = decoded;
         next();
       });
     };
@@ -403,14 +403,14 @@ async function run() {
       },
 
       getContestByCreator: async (req, res) => {
-        const id = req.params.creatorId;
-        const email = req.decoded.email;
-
-        const page = req.query.page * 1 || 1;
-        const limit = req.query.limit * 1 || 10;
-        const skip = (page - 1) * limit;
-
         try {
+          const id = req.params.creatorId;
+          const email = req.decoded.email;
+
+          const page = req.query.page * 1 || 1;
+          const limit = req.query.limit * 1 || 10;
+          const skip = (page - 1) * limit;
+
           const creator = await usersCollection.findOne({ email });
 
           if (
@@ -666,6 +666,7 @@ async function run() {
     );
     app.get(
       "/contests/creator/:creatorId",
+      verifyToken,
       contestController.getContestByCreator
     );
     app.get(

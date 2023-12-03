@@ -1,5 +1,18 @@
+import Loader from "../../components/shared/Loader";
+import useContestByCreator from "../../hooks/useContestByCreator";
+import CreatedContestTable from "./CreatedContestTable";
+
 const MyCreatedContest = () => {
-  return <div>MyCreatedContest</div>;
+  const { contests, isLoading } = useContestByCreator();
+
+  if (isLoading) return <Loader />;
+  console.log(contests);
+
+  return (
+    <div>
+      <CreatedContestTable data={contests} />
+    </div>
+  );
 };
 
 export default MyCreatedContest;
