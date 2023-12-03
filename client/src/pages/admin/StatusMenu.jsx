@@ -3,16 +3,14 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
-import useUsers from "../../hooks/useUsers";
+import { updateContest } from "../../api/contest";
+import useContestForAdmin from "../../hooks/useContestsForAdmin";
 
 export const StatusMenu = ({ status, id, name }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const axiosSecure = useAxiosSecure();
-  const { refetch } = useUsers();
+  const { refetch } = useContestForAdmin();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -30,11 +28,11 @@ export const StatusMenu = ({ status, id, name }) => {
         confirmButtonText: "Yes, i want!",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const res = await axiosSecure.patch(`users/${id}`, {
-            role: selectedStatus,
+          const res = await updateContest(id, {
+            status: selectedStatus,
           });
 
-          if (res.data.acknowledged) {
+          if (res.acknowledged) {
             refetch();
 
             Swal.fire({
@@ -72,7 +70,7 @@ export const StatusMenu = ({ status, id, name }) => {
         TransitionComponent={Fade}
       >
         <MenuItem onClick={() => handleUpdate("pending")}>Pending</MenuItem>
-        <MenuItem onClick={() => handleUpdate("accept")}>Approve</MenuItem>
+        <MenuItem onClick={() => handleUpdate("accepted")}>Accepted</MenuItem>
       </Menu>
     </div>
   );

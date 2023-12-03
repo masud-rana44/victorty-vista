@@ -7,12 +7,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Edit, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
-import useUsers from "../../hooks/useUsers";
 import { StatusMenu } from "./StatusMenu";
+
 import { deleteContest } from "../../api/contest";
+import useContestForAdmin from "../../hooks/useContestsForAdmin";
 
 export default function ContestsTable({ data }) {
-  const { refetch } = useUsers();
+  const { refetch } = useContestForAdmin();
 
   const handleDeleteUser = (id) => {
     Swal.fire({
@@ -26,8 +27,7 @@ export default function ContestsTable({ data }) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await deleteContest(id);
-        console.log(res);
-        if (res.data.deletedCount > 0) {
+        if (res?.acknowledged) {
           refetch();
           Swal.fire({
             title: "Deleted!",

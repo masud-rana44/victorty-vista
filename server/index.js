@@ -564,7 +564,7 @@ async function run() {
         const id = req.params.id;
         const contest = req.body;
         const result = await contestCollection.updateOne(
-          { _id: toObjectId(id) },
+          { _id: new ObjectId(id) },
           { $set: contest }
         );
         res.send(result);

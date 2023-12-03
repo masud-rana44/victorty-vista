@@ -7,8 +7,6 @@ const AllContests = () => {
 
   if (isLoading) return <Loader />;
 
-  console.log(contests);
-
   return (
     <div>
       <ContestsTable data={contests} />
