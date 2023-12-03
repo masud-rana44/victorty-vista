@@ -14,6 +14,7 @@ import MyWinningContest from "../pages/users/MyWinningContest";
 import MyCreatedContest from "../pages/creator/MyCreatedContest";
 import Contests from "../pages/Contests";
 import UpdateContest from "../pages/creator/UpdateContest";
+import ContestDetails from "../pages/ContestDetails";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/contests",
         element: <Contests />,
+      },
+      {
+        path: "/contests/:id",
+        element: <ContestDetails />,
       },
     ],
   },

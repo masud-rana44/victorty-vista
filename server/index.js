@@ -216,8 +216,12 @@ async function run() {
           const winner = await usersCollection.findOne({
             _id: new ObjectId(result.winner),
           });
+          const creator = await usersCollection.findOne({
+            _id: new ObjectId(result.creator),
+          });
 
           result.winner = winner;
+          result.creator = creator;
 
           res.send(result);
         } catch (error) {
