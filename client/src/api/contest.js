@@ -5,8 +5,8 @@ export const getAllContests = async () => {
   return data;
 };
 
-export const getPopularContests = async () => {
-  const { data } = await axiosPublic.get("/contests/popular");
+export const getPopularContests = async (text) => {
+  const { data } = await axiosPublic.get(`/contests/popular?text=${text}`);
   return data;
 };
 

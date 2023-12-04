@@ -1,4 +1,4 @@
-const Banner = () => {
+const Banner = ({ handleSearch, text, setText }) => {
   return (
     <div className="relative">
       <section className="bg-yellow-50 overflow-hidden">
@@ -24,7 +24,7 @@ const Banner = () => {
               </p>
 
               <form
-                method="POST"
+                onSubmit={handleSearch}
                 className="max-w-xl mx-auto mt-8 bg-white lg:mx-0 sm:bg-transparent lg:mt-12 rounded-xl"
               >
                 <div className="p-4 sm:p-2 sm:bg-white sm:border-2 sm:border-transparent sm:rounded-full sm:focus-within:border-orange-500 sm:focus-within:ring-1 sm:focus-within:ring-orange-500">
@@ -33,9 +33,10 @@ const Banner = () => {
                       <div className="relative text-gray-400 focus-within:text-gray-600">
                         <label htmlFor="email" className="sr-only"></label>
                         <input
-                          type="email"
-                          name="email"
+                          name="type"
                           id="email"
+                          onChange={(e) => setText(e.target.value)}
+                          value={text}
                           placeholder="Search for contests"
                           className="block w-full px-4 py-4 text-base text-center text-black placeholder-gray-500 transition-all duration-200 border-transparent rounded-full sm:text-left focus:border-transparent focus:ring-0 caret-orange-500"
                           required=""

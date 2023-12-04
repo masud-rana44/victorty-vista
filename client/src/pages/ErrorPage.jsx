@@ -1,13 +1,13 @@
 import { useRouteError } from "react-router-dom";
 import { Link } from "react-router-dom";
-import errorImage from "../assets/errorpage.jpg";
+// import errorImage from "../assets/errorpage.jpg";
 
 const ErrorPage = () => {
   const error = useRouteError();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 to-indigo-500">
-      <img className="h-[300px] rounded-lg mb-6" src={errorImage} alt="" />
+      {/* <img className="h-[300px] rounded-lg mb-6" src={errorImage} alt="" /> */}
       <h2 className="text-4xl lg:text-6xl text-white font-bold mb-4">
         Oops! Something went wrong
       </h2>

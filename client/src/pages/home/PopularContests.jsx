@@ -4,8 +4,8 @@ import Loader from "../../components/shared/Loader";
 import SectionHeading from "../../components/shared/SectionHeading";
 import usePopularContests from "../../hooks/usePopularContests";
 
-const PopularContests = () => {
-  const { contests, isLoading } = usePopularContests();
+const PopularContests = ({ text }) => {
+  const { contests, isLoading } = usePopularContests(text);
 
   if (isLoading) return <Loader />;
 

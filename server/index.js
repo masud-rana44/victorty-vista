@@ -279,9 +279,17 @@ async function run() {
 
       getPopularContests: async (req, res) => {
         try {
+          const searchText = req.query.text || "";
+          console.log(searchText);
+
           const result = await contestCollection
             .aggregate([
-              { $match: { status: "accepted" } },
+              {
+                $match: {
+                  status: "accepted",
+                  type: { $regex: searchText, $options: "i" },
+                },
+              },
               {
                 $project: {
                   title: 1,
