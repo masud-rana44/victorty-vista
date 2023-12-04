@@ -1,20 +1,11 @@
-import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import Loader from "./Loader";
 import Container from "./Container";
 import { formatDate, isContestEnd } from "../../utils";
-import useRole from "../../hooks/useRole";
 
 const DetailsBody = ({ contest }) => {
-  const navigate = useNavigate();
-  const { role, isLoading: isRoleLoading } = useRole();
-
-  if (isRoleLoading) return <Loader />;
-
   return (
     <Container>
-      <div className="grid grid-cols-1 lg:grid-cols-6 gap-8 mt-10">
-        <div className="lg:col-span-4">
+      <div className="grid grid-cols-1  gap-8 mt-10">
+        <div>
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h1 className="text-3xl font-semibold mb-2">Contest Details</h1>
             <hr className="mb-6 text-gray-500" />
@@ -28,10 +19,10 @@ const DetailsBody = ({ contest }) => {
           </div>
         </div>
 
-        <div className="order-first lg:order-last w-full lg:col-span-2 bg-gray-100 p-6">
+        <div className="order-first  w-full ">
           {contest?.creator && (
             <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-              <h1 className="font-medium mb-1">Contest creator</h1>
+              <h1 className="font-medium mb-1 ">Contest creator</h1>
               <div className="flex items-center gap-x-2">
                 <div>
                   <img
@@ -73,25 +64,18 @@ const DetailsBody = ({ contest }) => {
 
           {!isContestEnd(contest?.deadline) && (
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="mb-4">Price: {contest?.prizeMoney}$</div>
               <div className="mb-4">
-                Registration fee: Only {contest?.entryFee}$
+                <span className="font-medium">Price:</span>{" "}
+                {contest?.prizeMoney}$
               </div>
               <div className="mb-4">
-                Deadline: {formatDate(contest?.deadline)}
+                <span className="font-medium">Registration fee: Only</span>{" "}
+                {contest?.entryFee}$
               </div>
-              {role === "user" && (
-                <Button
-                  onClick={() =>
-                    navigate(`/contests/registration/${contest._id}`, {
-                      state: { contest },
-                    })
-                  }
-                  variant="contained"
-                >
-                  Register Now
-                </Button>
-              )}
+              <div className="mb-4">
+                <span className="font-medium">Deadline:</span>{" "}
+                {formatDate(contest?.deadline)}
+              </div>
             </div>
           )}
         </div>

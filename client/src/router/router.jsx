@@ -18,6 +18,7 @@ import ContestDetails from "../pages/ContestDetails";
 import ContestRegistration from "../pages/ContestRegistration";
 import TaskSubmission from "../pages/users/TaskSubmission";
 import ContestSubmission from "../pages/creator/ContestSubmission";
+import LeaderBoard from "../pages/LeaderBoard";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/contests/:id",
         element: <ContestDetails />,
+      },
+      {
+        path: "/leaderboard",
+        element: <LeaderBoard />,
       },
       {
         path: "/contests/registration/:contestId",

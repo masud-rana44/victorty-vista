@@ -12,10 +12,12 @@ const ContestRegistration = () => {
 
   return (
     <Container>
-      <h1 className="text-2xl text-gray-600 font-semibold text-center mt-10">{`Registration for ${contest?.title}`}</h1>
-      <Elements stripe={stripePromise}>
-        <CheckoutForm amount={contest?.entryFee} />
-      </Elements>
+      <div className="max-w-2xl  mx-auto text-center">
+        <h1 className="text-3xl text-gray-700 font-semibold text-left my-10">{`Please Payment to Confirm Your Registration`}</h1>
+        <Elements stripe={stripePromise}>
+          <CheckoutForm amount={contest?.entryFee} />
+        </Elements>
+      </div>
     </Container>
   );
 };

@@ -7,9 +7,9 @@ const HomePage = () => {
   return (
     <div>
       <Banner />
-      <BestCreators />
       <PopularContests />
       <Winners />
+      <BestCreators />
     </div>
   );
 };

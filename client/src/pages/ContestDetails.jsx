@@ -10,8 +10,6 @@ const ContestDetails = () => {
 
   if (isLoading) return <Loader />;
 
-  console.log(contest);
-
   return (
     <div>
       <DetailsHeader contest={contest} />
