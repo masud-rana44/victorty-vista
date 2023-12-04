@@ -607,9 +607,8 @@ async function run() {
         }
       },
       getLeaderboard: async (req, res) => {
-        console.log("getLeaderboard");
         try {
-          const users = await contestCollection
+          const winners = await contestCollection
             .aggregate([
               {
                 $match: { status: "accepted", winner: { $ne: null } },
@@ -617,39 +616,27 @@ async function run() {
               {
                 $group: {
                   _id: "$winner",
-                  // totalPrizeMoney: { $sum: "$prizeMoney" },
+                  totalPrizeMoney: { $sum: "$priceMoney" },
                 },
               },
-              // {
-              //   $lookup: {
-              //     from: "users",
-              //     localField: "winner",
-              //     foreignField: "_id",
-              //     as: "winner",
-              //   },
-              // },
-              // {
-              //   $unwind: "$winner",
-              // },
-              // {
-              //   $project: {
-              //     _id: 0,
-              //     winner: "$winner.name",
-              //     image: "$winner.image",
-              //     email: "$winner.email",
-              //     totalPrizeMoney: 1,
-              //   },
-              // },
-              // {
-              //   $sort: { totalPrizeMoney: -1 },
-              // },
-              // {
-              //   $limit: 20,
-              // },
+              {
+                $sort: { totalPrizeMoney: -1 },
+              },
+              { $limit: 5 },
             ])
             .toArray();
 
-          res.status(200).send(users);
+          const winnersPromises = winners.map(async (winner) => {
+            const contests = await usersCollection
+              .find({ _id: new ObjectId(winner._id) })
+              .toArray();
+
+            winner.winner = contests;
+          });
+
+          await Promise.all(winnersPromises);
+
+          res.status(200).send(winners);
         } catch (error) {
           res.status(500).send(error);
         }
