@@ -12,9 +12,12 @@ const ContestCard = ({ contest }) => {
       </figure>
       <div className="card-body">
         <h2 className="card-title">{contest?.title}</h2>
-        <p>{contest?.description.slice(0, 20)}...</p>
-        <div className="card-actions justify-end">
-          <p>Type: {contest?.type}</p>
+        <p>{contest?.description.slice(0, 70)}...</p>
+        <div className="card-actions justify-between">
+          <div className="font-medium">
+            <p>Type: {contest?.type}</p>
+            <p>Total Registration: {contest?.participantsCount}</p>
+          </div>
           <Link to={`/contests/${contest?._id}`}>
             <button className="btn btn-primary">Details</button>
           </Link>

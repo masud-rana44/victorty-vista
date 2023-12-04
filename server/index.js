@@ -208,7 +208,9 @@ async function run() {
                   type: 1,
                   image: 1,
                   description: 1,
-                  // participantsCount: { $size: "$participants" },
+                  participantsCount: {
+                    $size: { $ifNull: ["$participants", []] },
+                  },
                 },
               },
             ])
