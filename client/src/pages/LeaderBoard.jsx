@@ -37,7 +37,7 @@ const LeaderBoard = () => {
                   </div>
                 </div>
               </div>
-              <div className="font-medium">{item?.totalPrizeMoney}</div>
+              <div className="font-medium">${item?.totalPrizeMoney}</div>
             </div>
           ))}
         </div>
