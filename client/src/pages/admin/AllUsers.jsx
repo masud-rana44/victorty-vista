@@ -1,4 +1,5 @@
 import Loader from "../../components/shared/Loader";
+import SectionHeading from "../../components/shared/SectionHeading";
 import useUsers from "../../hooks/useUsers";
 import UsersTable from "./UsersTable";
 
@@ -7,10 +8,9 @@ const AllUsers = () => {
 
   if (isLoading) return <Loader />;
 
-  console.log(users);
-
   return (
     <div>
+      <SectionHeading>All Users</SectionHeading>
       <UsersTable data={users} />
     </div>
   );

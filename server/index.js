@@ -311,44 +311,41 @@ async function run() {
           const result = await contestCollection
             .aggregate([
               {
-                $match: { status: "accepted" },
-              },
-              {
-                $group: {
-                  _id: "$creator",
-                  // bestContest: { $first: "$$ROOT" }, // Retrieve the first contest for each creator
-                  totalPrizeMoney: { $sum: "$prizeMoney" },
+                $match: {
+                  status: "accepted",
                 },
               },
               {
-                $lookup: {
-                  from: "users",
-                  localField: "creator",
-                  foreignField: "_id",
-                  as: "creator",
+                $project: {
+                  title: 1,
+                  type: 1,
+                  creator: 1,
+                  image: 1,
+                  description: 1,
+                  creatorInfo: 1,
+                  participantsCount: {
+                    $size: { $ifNull: ["$participants", []] },
+                  },
                 },
               },
-              // {
-              //   $unwind: "$creator",
-              // },
-              // {
-              //   $project: {
-              //     _id: 0,
-              //     creator: "$creator.name",
-              //     image: "$creator.image",
-              //     email: "$creator.email",
-              //     bestContest: "$bestContest", // Include the details of the best contest
-              //     totalPrizeMoney: 1,
-              //   },
-              // },
               {
-                $sort: { totalPrizeMoney: -1 },
+                $sort: { participantsCount: -1 },
               },
-              {
-                $limit: 5, // Limit the result to the top 5 creators with their best contests
-              },
+              { $limit: 5 },
             ])
             .toArray();
+
+          const creators = result.map(async (contest) => {
+            const creator = await usersCollection.findOne({
+              _id: new ObjectId(contest.creator),
+            });
+
+            console.log(creator, contest.creator);
+
+            contest.creatorInfo = creator;
+          });
+
+          await Promise.all(creators);
 
           res.status(200).json(result);
         } catch (error) {
@@ -557,24 +554,45 @@ async function run() {
 
       getWinners: async (req, res) => {
         try {
-          const contests = await contestCollection
-            .find({
-              status: "accepted",
-              winner: { $ne: null },
-            })
+          const result = await contestCollection
+            .aggregate([
+              {
+                $match: {
+                  status: "accepted",
+                  winner: { $ne: null },
+                },
+              },
+              {
+                $project: {
+                  title: 1,
+                  type: 1,
+                  winner: 1,
+                  image: 1,
+                  description: 1,
+                  creatorInfo: 1,
+                  participantsCount: {
+                    $size: { $ifNull: ["$participants", []] },
+                  },
+                },
+              },
+              {
+                $sort: { participantsCount: -1 },
+              },
+              { $limit: 5 },
+            ])
             .toArray();
 
-          const winners = contests.map((contest) => {
-            return {
-              title: contest.title,
-              image: contest.image,
-              winner: contest.winner,
-              prizeMoney: contest.prizeMoney,
-              participantCount: contest?.participants?.length,
-            };
+          const creators = result.map(async (contest) => {
+            const creator = await usersCollection.findOne({
+              _id: new ObjectId(contest.winner),
+            });
+
+            contest.winnerInfo = creator;
           });
 
-          res.status(200).json(winners);
+          await Promise.all(creators);
+
+          res.status(200).json(result);
         } catch (error) {
           console.log(error);
           res.status(500).json({ error: error.message });
