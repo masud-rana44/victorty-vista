@@ -33,7 +33,7 @@ const MyRegisteredContest = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-2xl font-bold mb-4">My Registered Contests</h1>
+      <h1 className="text-3xl font-bold mb-4">My Registered Contests</h1>
       <div className="flex justify-end mb-4">
         <label htmlFor="sort" className="mr-2">
           Sort By:
@@ -52,18 +52,19 @@ const MyRegisteredContest = () => {
       {sortedContests?.map((contest) => (
         <div
           key={contest._id}
-          className="border bg-white border-gray-300 break-words rounded p-4 mb-4"
+          className="relative border bg-gray-800 border-gray-300 break-words rounded p-4 mb-4 -z-5"
         >
-          <h2 className="text-lg font-bold mb-2">{contest.title}</h2>
-          <p className="text-gray-500 mb-2">
+          <h2 className=" text-white text-lg font-bold mb-2">
+            {contest.title}
+          </h2>
+          <p className=" text-white  mb-2">
             Deadline: {new Date(contest.deadline).toLocaleString()}
           </p>
-          <p>{contest.description}</p>
           <Link
             to={`/dashboard/task-submission/${contest._id}`}
             state={{ title: contest.title }}
           >
-            <button className="bg-blue-500 text-white px-4 py-2 mt-2 rounded">
+            <button className="bg-violet-500 text-white px-4 py-2 mt-2 rounded">
               Submit Task
             </button>
           </Link>

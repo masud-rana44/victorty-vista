@@ -19,15 +19,29 @@ const Navbar = () => {
         title=""
         className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2 "
       >
-        {userData?.role}
+        Home
       </NavLink>
+
       <NavLink
-        to="/dashboard"
+        to="/contests"
         title=""
-        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2 "
+        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
       >
-        Dashboard
+        Contests
       </NavLink>
+
+      <NavLink
+        to="/leaderboard"
+        title=""
+        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+      >
+        Leader Board
+      </NavLink>
+    </>
+  );
+
+  const linksSm = (
+    <>
       <NavLink
         to="/"
         title=""
@@ -51,11 +65,24 @@ const Navbar = () => {
       >
         Leader Board
       </NavLink>
+      <NavLink
+        to="/dashboard"
+        title=""
+        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+      >
+        Dashboard
+      </NavLink>
+      <button
+        onClick={logOut}
+        className="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+      >
+        Logout
+      </button>
     </>
   );
 
   return (
-    <header className="absolute inset-x-0 top-0 z-10 w-full">
+    <header className="absolute bg-gray-50 inset-x-0 top-0 z-10 w-full">
       <div className="px-4 mx-auto sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           <div className="flex-shrink-0">
@@ -66,6 +93,7 @@ const Navbar = () => {
 
           <button
             type="button"
+            onClick={() => setExpanded(!expanded)}
             className="inline-flex p-2 text-black transition-all duration-200 rounded-md lg:hidden focus:bg-gray-100 hover:bg-gray-100"
           >
             <svg
@@ -103,13 +131,7 @@ const Navbar = () => {
             {links}
 
             {user ? (
-              <Link
-                onClick={logOut}
-                className="inline-flex items-center justify-center px-5 py-2.5 text-base font-semibold transition-all duration-200 rounded-full bg-orange-500 text-white hover:bg-orange-600 focus:bg-orange-600"
-                role="button"
-              >
-                Logout
-              </Link>
+              <MenuDropdown role={userData?.role} isLoading={isLoading} />
             ) : (
               <Link
                 to="/login"
@@ -120,6 +142,15 @@ const Navbar = () => {
               </Link>
             )}
           </div>
+
+          {/* Collapsed navigation */}
+          {expanded && (
+            <nav className="absolute bg-gray-50 w-full top-[66px] left-0">
+              <div className="px-1 py-8 text-center">
+                <div className="grid gap-y-7">{user && linksSm}</div>
+              </div>
+            </nav>
+          )}
         </div>
       </div>
     </header>

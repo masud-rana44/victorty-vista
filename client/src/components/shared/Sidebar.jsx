@@ -1,4 +1,4 @@
-import { CalendarDays, Home, Mail, Menu, ShoppingBag } from "lucide-react";
+import { CalendarDays, Home } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import Loader from "../shared/Loader";
 import useRole from "../../hooks/useRole.js";
@@ -58,27 +58,12 @@ const Sidebar = () => {
       to: "/",
       Icon: Home,
     },
-    {
-      label: "Our Menu",
-      to: "/menu",
-      Icon: Menu,
-    },
-    {
-      label: "Our Shop",
-      to: "/shop",
-      Icon: ShoppingBag,
-    },
-    {
-      label: "Contact Us",
-      to: "/contact",
-      Icon: Mail,
-    },
   ];
 
   const links = isAdmin ? adminLinks : isCreator ? creatorLinks : userLinks;
 
   return (
-    <div className="min-h-screen w-[260px]  fixed top-0 left-0 bg-primary py-8">
+    <div className="z-50 min-h-screen w-[260px] bg-violet-600 fixed top-0 left-0 py-8">
       <div className="text-center w-full">
         <Logo />
       </div>
@@ -88,7 +73,7 @@ const Sidebar = () => {
             <li key={link.to}>
               <NavLink
                 to={link.to}
-                className={`uppercase font-medium flex items-center space-x-4 hover:text-gray-200 transition px-8 py-2 ${
+                className={`uppercase font-medium flex items-center space-x-4 hover:text-gray-600 transition px-8 py-2 ${
                   pathname === link.to && "bg-white hover:text-black"
                 }`}
               >
@@ -103,7 +88,7 @@ const Sidebar = () => {
             <li key={link.to}>
               <NavLink
                 to={link.to}
-                className="uppercase font-medium flex items-center px-8 space-x-4 hover:text-gray-200 transition"
+                className="uppercase font-medium flex items-center px-8 space-x-4 hover:text-gray-600 transition"
               >
                 <link.Icon className="h-6 w-6" /> <span>{link.label}</span>
               </NavLink>

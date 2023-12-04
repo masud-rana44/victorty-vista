@@ -316,31 +316,31 @@ async function run() {
               {
                 $group: {
                   _id: "$creator",
-                  bestContest: { $first: "$$ROOT" }, // Retrieve the first contest for each creator
+                  // bestContest: { $first: "$$ROOT" }, // Retrieve the first contest for each creator
                   totalPrizeMoney: { $sum: "$prizeMoney" },
                 },
               },
               {
                 $lookup: {
                   from: "users",
-                  localField: "_id",
+                  localField: "creator",
                   foreignField: "_id",
                   as: "creator",
                 },
               },
-              {
-                $unwind: "$creator",
-              },
-              {
-                $project: {
-                  _id: 0,
-                  creator: "$creator.name",
-                  image: "$creator.image",
-                  email: "$creator.email",
-                  bestContest: "$bestContest", // Include the details of the best contest
-                  totalPrizeMoney: 1,
-                },
-              },
+              // {
+              //   $unwind: "$creator",
+              // },
+              // {
+              //   $project: {
+              //     _id: 0,
+              //     creator: "$creator.name",
+              //     image: "$creator.image",
+              //     email: "$creator.email",
+              //     bestContest: "$bestContest", // Include the details of the best contest
+              //     totalPrizeMoney: 1,
+              //   },
+              // },
               {
                 $sort: { totalPrizeMoney: -1 },
               },
@@ -591,35 +591,35 @@ async function run() {
               {
                 $group: {
                   _id: "$winner",
-                  totalPrizeMoney: { $sum: "$prizeMoney" },
+                  // totalPrizeMoney: { $sum: "$prizeMoney" },
                 },
               },
-              {
-                $lookup: {
-                  from: "users",
-                  localField: "_id",
-                  foreignField: "_id",
-                  as: "winner",
-                },
-              },
-              {
-                $unwind: "$winner",
-              },
-              {
-                $project: {
-                  _id: 0,
-                  winner: "$winner.name",
-                  image: "$winner.image",
-                  email: "$winner.email",
-                  totalPrizeMoney: 1,
-                },
-              },
-              {
-                $sort: { totalPrizeMoney: -1 },
-              },
-              {
-                $limit: 20,
-              },
+              // {
+              //   $lookup: {
+              //     from: "users",
+              //     localField: "winner",
+              //     foreignField: "_id",
+              //     as: "winner",
+              //   },
+              // },
+              // {
+              //   $unwind: "$winner",
+              // },
+              // {
+              //   $project: {
+              //     _id: 0,
+              //     winner: "$winner.name",
+              //     image: "$winner.image",
+              //     email: "$winner.email",
+              //     totalPrizeMoney: 1,
+              //   },
+              // },
+              // {
+              //   $sort: { totalPrizeMoney: -1 },
+              // },
+              // {
+              //   $limit: 20,
+              // },
             ])
             .toArray();
 

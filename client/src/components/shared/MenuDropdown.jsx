@@ -20,8 +20,8 @@ const MenuDropdown = ({ role, isLoading }) => {
   if (!user || isLoading) return null;
 
   let dashboardLink = "/dashboard/registered-contests";
-  if (role === "creator") dashboardLink = "/dashboard/creator/contests";
-  else if (role === "admin") dashboardLink = "/dashboard/users";
+  if (role === "creator") dashboardLink = "/dashboard/add-contest";
+  else if (role === "admin") dashboardLink = "/dashboard/all-contests";
 
   return (
     <div className="relative">
@@ -33,32 +33,32 @@ const MenuDropdown = ({ role, isLoading }) => {
         >
           {/* Avatar */}
           <img
-            className="rounded-full object-cover h-10 w-10 border-2 border-[#FF9736]"
+            className="rounded-full object-cover h-10 w-10 border-2 "
             referrerPolicy="no-referrer"
             src={user && user.photoURL}
             alt="profile"
-            height="40"
-            width="40"
+            height="36"
+            width="36"
           />
         </div>
       </div>
       {isOpen && (
-        <div className="absolute rounded-md shadow-md w-[40vw] md:w-[15vw] bg-white overflow-hidden right-0 top-12 text-sm">
+        <div className="absolute rounded-md shadow-md w-[40vw] md:w-[15vw] bg-gray-100 overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
             {user?.email ? (
               <>
-                <div className="px-4 py-3 hover:bg-neutral-100 transition font-semibold">
+                <div className="px-4 py-3 hover:bg-neutral-200 transition font-semibold">
                   {user?.displayName}
                 </div>
                 <Link
                   to={dashboardLink}
-                  className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                  className="px-4 py-3 hover:bg-neutral-200 transition font-semibold"
                 >
                   Dashboard
                 </Link>
                 <div
                   onClick={handleLogout}
-                  className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                  className="px-4 py-3 hover:bg-neutral-200 transition font-semibold"
                 >
                   Logout
                 </div>

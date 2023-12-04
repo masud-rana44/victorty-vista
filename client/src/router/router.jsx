@@ -19,6 +19,9 @@ import ContestRegistration from "../pages/ContestRegistration";
 import TaskSubmission from "../pages/users/TaskSubmission";
 import ContestSubmission from "../pages/creator/ContestSubmission";
 import LeaderBoard from "../pages/LeaderBoard";
+import PrivateRoute from "./PrivateRoute";
+import CreatorRoute from "./CreatorRoute";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +38,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/contests/:id",
-        element: <ContestDetails />,
+        element: (
+          <PrivateRoute>
+            <ContestDetails />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/leaderboard",
@@ -43,21 +50,37 @@ const router = createBrowserRouter([
       },
       {
         path: "/contests/registration/:contestId",
-        element: <ContestRegistration />,
+        element: (
+          <PrivateRoute>
+            <ContestRegistration />
+          </PrivateRoute>
+        ),
       },
     ],
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "all-users",
-        element: <AllUsers />,
+        element: (
+          <AdminRoute>
+            <AllUsers />
+          </AdminRoute>
+        ),
       },
       {
         path: "all-contests",
-        element: <AllContests />,
+        element: (
+          <AdminRoute>
+            <AllContests />
+          </AdminRoute>
+        ),
       },
       {
         path: "registered-contests",
@@ -75,19 +98,27 @@ const router = createBrowserRouter([
       // route for creator
       {
         path: "add-contest",
-        element: <AddContest />,
+        element: (
+          <CreatorRoute>
+            <AddContest />
+          </CreatorRoute>
+        ),
       },
       {
         path: "created-contests",
-        element: <MyCreatedContest />,
+        element: (
+          <CreatorRoute>
+            <MyCreatedContest />
+          </CreatorRoute>
+        ),
       },
       {
         path: "contests-submission/:id",
-        element: <ContestSubmission />,
-      },
-      {
-        path: "contests/update/:id",
-        element: <UpdateContest />,
+        element: (
+          <CreatorRoute>
+            <ContestSubmission />
+          </CreatorRoute>
+        ),
       },
       {
         path: "contests/update/:id",
