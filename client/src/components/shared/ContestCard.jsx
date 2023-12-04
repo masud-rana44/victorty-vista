@@ -4,7 +4,11 @@ const ContestCard = ({ contest }) => {
   return (
     <div className="card card-compact w-96 bg-base-100 shadow-xl">
       <figure>
-        <img src={contest?.image} alt="Shoes" />
+        <img
+          src={contest?.image}
+          alt="Shoes"
+          className="h-[240px] object-cover"
+        />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{contest?.title}</h2>

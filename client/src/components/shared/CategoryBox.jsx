@@ -35,11 +35,10 @@ const CategoryBox = ({ label, icon: Icon }) => {
     <div
       onClick={handleCategoryClick}
       style={{ borderColor: isActive && "#000" }}
-      className={`flex flex-col space-y-1 items-center justify-center text-neutral-500  cursor-pointer border-b-2 pb-1 hover:text-neutral-700 hover:border-neutral-700 transition ${
+      className={`flex flex-col space-y-1 items-center justify-center text-neutral-500  cursor-pointer border-b-2 pb-1 transition ${
         isActive && "text-neutral-900 border-neutral-900"
       }}`}
     >
-      <Icon size={24} />
       <span>{label}</span>
     </div>
   );

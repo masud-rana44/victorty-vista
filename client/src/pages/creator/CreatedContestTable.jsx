@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { deleteContest } from "../../api/contest";
 import useContestByCreator from "../../hooks/useContestByCreator";
 import { Link, useLocation } from "react-router-dom";
-import { Eye, FileEdit, Trash } from "lucide-react";
+import { FileEdit, Trash } from "lucide-react";
 
 const CreatedContestTable = ({ data }) => {
   const { refetch } = useContestByCreator();
@@ -103,7 +103,7 @@ const CreatedContestTable = ({ data }) => {
                 ) : (
                   <Link to={`/dashboard/contests-submission/${contest._id}`}>
                     <button className="btn btn-outline btn-success btn-sm">
-                      <Eye className="h-6 w-6" />
+                      Details
                     </button>
                   </Link>
                 )}
